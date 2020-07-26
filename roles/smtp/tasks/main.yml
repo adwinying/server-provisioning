@@ -1,0 +1,16 @@
+---
+# Configure SMTP settings
+
+- name: Ensure msmtp package installed
+  apt:
+    name: msmtp
+    state: present
+    update_cache: yes
+  become: yes
+
+- name: Add mstmp config file
+  template:
+    src: msmtprc.j2
+    dest: "~/.msmtprc"
+    mode: '0600'
+    owner: "{{ server_username }}"

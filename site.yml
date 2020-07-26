@@ -1,0 +1,44 @@
+---
+# Deployment Script powered by Ansible
+
+- name: Bootstrap common settings
+  hosts: servers
+  roles:
+    - role: locale
+      tags: [bootstrap,locale]
+    - role: git
+      tags: [bootstrap,git]
+    - role: misc
+      tags: [bootstrap,misc]
+
+- name: Set up wireguard
+  hosts: servers
+  roles:
+    - role: wireguard
+      tags: wireguard
+
+- name: Configure remote tunnel server
+  hosts: remote
+  roles:
+    - role: firewall
+      tags: firewall
+    - role: fail2ban
+      tags: fail2ban
+
+- name: Configure local nas server
+  hosts: local
+  roles:
+    - role: hdd_mount
+      tags: hdd_mount
+    - role: smtp
+      tags: smtp
+    - role: hdd_smart
+      tags: hdd_smart
+    - role: samba
+      tags: samba
+    - role: acme_sh
+      tags: acme_sh
+    - role: docker
+      tags: docker
+    - role: healthcheck
+      tags: healthcheck

@@ -1,0 +1,9 @@
+- name: Restart wireguard service
+  systemd:
+    name: "wg-quick@{{ wireguard_interface }}"
+    state: restarted
+    daemon_reload: yes
+  delegate_to: "{{ item }}"
+  loop: "{{ ansible_play_hosts_all }}"
+  run_once: yes
+  become: yes

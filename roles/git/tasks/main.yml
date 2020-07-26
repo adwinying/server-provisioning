@@ -1,0 +1,26 @@
+---
+# Install and configure git
+
+- name: Ensure git package installed
+  apt:
+    name: git
+    state: present
+  become: yes
+
+- name: Set git user name
+  git_config:
+    name: user.name
+    scope: global
+    value: "{{ git_user_name }}"
+
+- name: Set git user email
+  git_config:
+    name: user.email
+    scope: global
+    value: "{{ git_user_email }}"
+
+- name: Set default editor
+  git_config:
+    name: core.editor
+    scope: global
+    value: vim

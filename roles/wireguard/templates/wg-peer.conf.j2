@@ -1,0 +1,10 @@
+[Interface]
+PrivateKey = {{ item.private_key }}
+Address = {{ item.ip_addr }}
+DNS = {{ wireguard_dns }}
+
+[Peer]
+PublicKey = {{ tunnel_public_key }}
+AllowedIPs = 0.0.0.0/0
+Endpoint = {{ wireguard_endpoint }}:{{ wireguard_listen_port }}
+PersistentKeepalive = {{ wireguard_keepalive_duration }}

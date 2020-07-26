@@ -1,0 +1,17 @@
+# Set default values for all following accounts.
+defaults
+auth           on
+tls            on
+tls_trust_file /etc/ssl/certs/ca-certificates.crt
+logfile        ~/.msmtp.log
+
+# smtp2go
+account        smtp2go
+host           {{ smtp_host }}
+port           {{ smtp_port }}
+from           {{ smtp_from }}
+user           {{ smtp_username }}
+password       {{ smtp_password }}
+
+# Set a default account
+account default : smtp2go

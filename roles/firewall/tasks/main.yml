@@ -1,0 +1,49 @@
+---
+# Configure ufw
+
+- name: Ensure ufw package installed
+  apt:
+    name: ufw
+    state: present
+  become: yes
+
+- name: Deny all incoming by default
+  ufw:
+    policy: deny
+    direction: incoming
+  become: yes
+
+- name: Allow all outgoing by default
+  ufw:
+    policy: allow
+    direction: outgoing
+  become: yes
+
+- name: Allow SSH
+  ufw:
+    rule: allow
+    port: ssh
+  become: yes
+
+- name: Allow HTTP
+  ufw:
+    rule: allow
+    port: http
+  become: yes
+
+- name: Allow HTTPS
+  ufw:
+    rule: allow
+    port: https
+  become: yes
+
+- name: Allow Wireguard
+  ufw:
+    rule: allow
+    port: "{{ wireguard_listen_port }}"
+  become: yes
+
+- name: Enable ufw service
+  ufw:
+    state: enabled
+  become: yes

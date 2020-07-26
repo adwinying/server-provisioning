@@ -1,0 +1,41 @@
+---
+# Configure acme.sh
+
+- name: Ensure curl command exists
+  apt:
+    name: curl
+    state: present
+    update_cache: yes
+  become: yes
+
+- name: Check if .acme.sh folder exists
+  stat:
+    path: ~/.acme.sh/acme.sh
+  register: is_acme_sh_installed
+
+- name: Install acme.sh
+  shell: curl https://get.acme.sh | sh
+  when: not is_acme_sh_installed.stat.exists
+
+- name: Configure HE DNS username
+  lineinfile:
+    path: ~/.acme.sh/account.conf
+    regex: '^SAVED_HE_Username'
+    line: SAVED_HE_Username='{{ dns_provider_username }}'
+  notify:
+    - Issue SSL cert
+
+- name: Configure HE DNS password
+  lineinfile:
+    path: ~/.acme.sh/account.conf
+    regex: '^SAVED_HE_Password'
+    line: SAVED_HE_Password='{{ dns_provider_password }}'
+  notify:
+    - Issue SSL cert
+
+- name: Create cert directory
+  file:
+    path: ~/.acme.sh/*.iadw.in
+    state: directory
+  notify:
+    - Issue SSL cert

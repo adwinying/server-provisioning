@@ -1,0 +1,44 @@
+[Interface]
+PrivateKey = {{ tunnel_private_key }}
+ListenPort = {{ wireguard_listen_port }}
+Address = {{ tunnel_ip_addr }}
+
+# Enable access to LAN network behind NAT
+PostUp = iptables -A FORWARD -i %i -j ACCEPT
+PostUp = iptables -t nat -A POSTROUTING -o ens3 -j MASQUERADE
+PostDown = iptables -D FORWARD -i %i -j ACCEPT
+PostDown = iptables -t nat -D POSTROUTING -o ens3 -j MASQUERADE
+
+# Forward http traffic to NAS
+PostUp = iptables -A FORWARD -i ens3 -o %i -p tcp --syn --dport 80 -m conntrack --ctstate NEW -j ACCEPT
+PostUp = iptables -A FORWARD -i ens3 -o %i -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+PostUp = iptables -A FORWARD -i %i -o ens3 -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+PostUp = iptables -t nat -A PREROUTING -i ens3 -p tcp --dport 80 -j DNAT --to-destination 192.168.50.2
+PostUp = iptables -t nat -A POSTROUTING -o wg0 -p tcp --dport 80 -d 192.168.50.2 -j SNAT --to-source 192.168.50.1
+PostDown = iptables -D FORWARD -i ens3 -o %i -p tcp --syn --dport 80 -m conntrack --ctstate NEW -j ACCEPT
+PostDown = iptables -D FORWARD -i ens3 -o %i -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+PostDown = iptables -D FORWARD -i %i -o ens3 -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+PostDown = iptables -t nat -D PREROUTING -i ens3 -p tcp --dport 80 -j DNAT --to-destination 192.168.50.2
+PostDown = iptables -t nat -D POSTROUTING -o wg0 -p tcp --dport 80 -d 192.168.50.2 -j SNAT --to-source 192.168.50.1
+
+# Forward https traffic to NAS
+PostUp = iptables -A FORWARD -i ens3 -o %i -p tcp --syn --dport 443 -m conntrack --ctstate NEW -j ACCEPT
+PostUp = iptables -A FORWARD -i ens3 -o %i -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+PostUp = iptables -A FORWARD -i %i -o ens3 -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+PostUp = iptables -t nat -A PREROUTING -i ens3 -p tcp --dport 443 -j DNAT --to-destination 192.168.50.2
+PostUp = iptables -t nat -A POSTROUTING -o wg0 -p tcp --dport 443 -d 192.168.50.2 -j SNAT --to-source 192.168.50.1
+PostDown = iptables -D FORWARD -i ens3 -o %i -p tcp --syn --dport 443 -m conntrack --ctstate NEW -j ACCEPT
+PostDown = iptables -D FORWARD -i ens3 -o %i -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+PostDown = iptables -D FORWARD -i %i -o ens3 -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+PostDown = iptables -t nat -D PREROUTING -i ens3 -p tcp --dport 443 -j DNAT --to-destination 192.168.50.2
+PostDown = iptables -t nat -D POSTROUTING -o wg0 -p tcp --dport 443 -d 192.168.50.2 -j SNAT --to-source 192.168.50.1
+
+[Peer] # nas
+PublicKey = {{ nas_public_key }}
+AllowedIPs = {{ nas_ip_addr }},{{ lan_address_range }}
+
+{% for peer in peers %}
+[Peer] # {{ peer.name }}
+PublicKey = {{ peer.public_key }}
+AllowedIPs = {{ peer.ip_addr }}
+{% endfor %}

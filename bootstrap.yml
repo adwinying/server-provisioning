@@ -1,0 +1,8 @@
+---
+# Pre-Deployment Script powered by Ansible
+
+- name: Bootstrap Servers
+  hosts: servers
+  roles:
+    - user
+    - ssh

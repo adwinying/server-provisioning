@@ -1,0 +1,13 @@
+---
+# Set up timezone & locale
+
+- name: Set timezone to Asia/Tokyo
+  timezone:
+    name: Asia/Tokyo
+  become: yes
+
+- name: Set locale
+  locale_gen:
+    name: en_US.UTF-8
+    state: present
+  become: yes

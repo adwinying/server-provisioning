@@ -1,0 +1,57 @@
+---
+# Configure creature comforts
+
+- name: Install vim
+  apt:
+    name: vim
+    state: present
+  become: yes
+
+- name: Install zsh
+  apt:
+    name: zsh
+    state: present
+  become: yes
+
+- name: Install tmux
+  apt:
+    name: tmux
+    state: present
+  become: yes
+
+- name: Install GNU stow
+  apt:
+    name: stow
+    state: present
+  become: yes
+
+- name: Change default shell to zsh
+  user:
+    name: "{{ server_username }}"
+    shell: /bin/zsh
+  become: yes
+
+- name: Clone dotfiles
+  git:
+    repo: git@github.com:adwinying/dotfiles.git
+    dest: ~/.dotfiles
+    version: master
+    accept_hostkey: yes
+
+- name: Check zsh configs exists
+  stat:
+    path: ~/.zsh
+  register: is_zsh_configs_exist
+
+- name: Symlink zsh configs
+  shell: cd ~/.dotfiles && stow zsh
+  when: not is_zsh_configs_exist.stat.exists
+
+- name: Check vim configs exists
+  stat:
+    path: ~/.vim
+  register: is_vim_configs_exist
+
+- name: Symlink vim configs
+  shell: cd ~/.dotfiles && stow vim
+  when: not is_vim_configs_exist.stat.exists

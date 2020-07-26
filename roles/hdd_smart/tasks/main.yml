@@ -1,0 +1,26 @@
+---
+# Configure HDD SMART monitoring
+
+- name: Ensure smartmontools package installed
+  apt:
+    name: smartmontools
+    state: present
+    update_cache: yes
+  become: yes
+
+- name: Configure smartd
+  template:
+    src: smartd.conf.j2
+    dest: /etc/smartd.conf
+  become: yes
+  notify:
+    - Restart smartd service
+
+- name: Configure smartd alert script
+  template:
+    src: smartd-runner.j2
+    dest: /usr/share/smartmontools/smartd-runner
+    mode: '0755'
+  become: yes
+  notify:
+    - Restart smartd service

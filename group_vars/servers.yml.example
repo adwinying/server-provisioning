@@ -1,0 +1,55 @@
+ansible_python_interpreter: auto
+
+server_username: user
+server_password: # generate with mkpasswd --method=sha-512
+
+git_user_name: John Doe
+git_user_email: john@example.org
+
+smartd_email: user@example.org
+
+smtp_from: nas@example.org
+smtp_username: nas@example.org
+smtp_password: smtpsecret
+smtp_host: smtp.example.org
+smtp_port: 25
+
+ssl_wildcard_domain: "*.example.org"
+dns_provider_username: user
+dns_provider_password: secret
+
+docker_healthcheck_endpoint: # generate URL from healthchecks.io
+server_healthcheck_endpoint: # generate URL from healthchecks.io
+
+wireguard_listen_port: 1194
+wireguard_interface: wg0
+wireguard_endpoint: tunnel.example.org
+wireguard_address_range: 10.0.50.0/24
+wireguard_dns: 10.0.1.1,1.1.1.1,1.0.0.1
+wireguard_keepalive_duration: 25
+
+lan_address_range: 10.0.1.1/24
+
+tunnel_ip_addr: 10.0.50.1/24
+tunnel_private_key: # generate with wg genkey
+tunnel_public_key: # generate with wg pubkey
+
+nas_ip_addr: 10.0.50.2/32
+nas_private_key: # generate with wg genkey
+nas_public_key: # generate with wg pubkey
+
+peers:
+  - name: device1
+    ip_addr: 10.0.50.3/32
+    private_key: # generate with wg genkey
+    public_key: # generate with wg pubkey
+
+  - name: device2
+    ip_addr: 10.0.50.4/32
+    private_key: # generate with wg genkey
+    public_key: # generate with wg pubkey
+
+  - name: device3
+    ip_addr: 10.0.50.5/32
+    private_key: # generate with wg genkey
+    public_key: # generate with wg pubkey

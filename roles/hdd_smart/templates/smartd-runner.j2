@@ -1,0 +1,5 @@
+#!/bin/sh
+# Send email
+su {{ server_username }} -c 'echo "Subject: $SMARTD_FAILTYPE\n$SMARTD_MESSAGE" | msmtp {{ smartd_email }}'
+# Notify user
+su {{ server_username }} -c 'wall "$SMARTD_MESSAGE"'

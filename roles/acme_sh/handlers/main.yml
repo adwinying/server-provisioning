@@ -1,0 +1,2 @@
+- name: Issue SSL cert
+  shell: ~/.acme.sh/acme.sh --issue -d '{{ ssl_wildcard_domain }}' --dns dns_he

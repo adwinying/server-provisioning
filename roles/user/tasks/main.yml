@@ -1,0 +1,29 @@
+---
+# Create a new user and add SSH key
+
+- name: Ensure group "admin" exists
+  group:
+    name: admin
+    state: present
+
+- name: Add a user named "{{ server_username }}"
+  user:
+    name: "{{ server_username }}"
+    password: "{{ server_password }}"
+    group: admin
+    shell: /bin/bash
+  become: yes
+
+- name: Create .ssh directory if it does not exist
+  file:
+    path: "/home/{{ server_username }}/.ssh"
+    state: directory
+    mode: '0700'
+    owner: "{{ server_username }}"
+
+- name: Add SSH keys to user "{{ server_username }}"
+  template:
+    src: authorized_keys.j2
+    dest: "/home/{{ server_username }}/.ssh/authorized_keys"
+    mode: '0600'
+    owner: "{{ server_username }}"

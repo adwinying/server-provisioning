@@ -1,0 +1,32 @@
+---
+# Configure HDD mount
+
+- name: Ensure autofs package installed
+  apt:
+    name: autofs
+    state: present
+    update_cache: yes
+  become: yes
+
+- name: Create mount directory
+  file:
+    path: /media/nas
+    state: directory
+    mode: '0770'
+  become: yes
+
+- name: Configure auto.master
+  template:
+    src: auto.master.j2
+    dest: /etc/auto.master
+  become: yes
+  notify:
+    - Restart autofs service
+
+- name: Configure auto.ext
+  template:
+    src: auto.ext.j2
+    dest: /etc/auto.ext
+  become: yes
+  notify:
+    - Restart autofs service

@@ -1,0 +1,13 @@
+---
+# Configure healthcheck service
+
+- name: Disable mailing of cron output
+  cronvar:
+    name: MAILTO
+    value: "\"\""
+
+- name: Schedule healthcheck cron
+  cron:
+    name: Healthcheck
+    minute: "*/3"
+    job: curl -fsS --retry 3 {{ server_healthcheck_endpoint }}

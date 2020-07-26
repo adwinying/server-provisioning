@@ -1,0 +1,4 @@
+roots
+servers
+group_vars/servers.yml
+roles/user/templates/authorized_keys.j2

@@ -1,0 +1,26 @@
+---
+# Configure fail2ban
+
+- name: Ensure fail2ban package installed
+  apt:
+    name: fail2ban
+    state: present
+    update_cache: yes
+  become: yes
+
+- name: Configure jail.local
+  template:
+    src: jail.local.j2
+    dest: /etc/fail2ban/jail.local.j2
+  become: yes
+  notify:
+    - Restart fail2ban service
+
+- name: Enable fail2ban service
+  systemd:
+    name: fail2ban
+    enabled: yes
+    masked: no
+  become: yes
+  notify:
+    - Restart fail2ban service
