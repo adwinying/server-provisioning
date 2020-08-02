@@ -31,9 +31,13 @@
     state: present
   become: yes
 
+- name: Get ubuntu release name
+  shell: lsb_release -cs
+  register: ubuntu_release_name
+
 - name: Add Docker Repository
   apt_repository:
-    repo: deb https://download.docker.com/linux/ubuntu bionic stable
+    repo: deb https://download.docker.com/linux/ubuntu {{ ubuntu_release_name.stdout }} stable
     state: present
   become: yes
 
