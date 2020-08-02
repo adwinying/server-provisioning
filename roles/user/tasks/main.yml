@@ -5,6 +5,7 @@
   group:
     name: admin
     state: present
+  become: yes
 
 - name: Add a user named "{{ server_username }}"
   user:
@@ -20,6 +21,7 @@
     state: directory
     mode: '0700'
     owner: "{{ server_username }}"
+  become: yes
 
 - name: Add SSH keys to user "{{ server_username }}"
   template:
@@ -27,3 +29,4 @@
     dest: "/home/{{ server_username }}/.ssh/authorized_keys"
     mode: '0600'
     owner: "{{ server_username }}"
+  become: yes

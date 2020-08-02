@@ -7,6 +7,7 @@
     regexp: "^PermitRootLogin"
     line: "PermitRootLogin no"
     state: present
+  become: yes
   notify:
     - Restart sshd
 
@@ -16,5 +17,6 @@
     regexp: "^PermitRootLogin"
     line: "PermitRootLogin no"
     state: present
+  become: yes
   notify:
     - Restart sshd
