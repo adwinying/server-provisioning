@@ -1,5 +1,4 @@
-- name: Restart autofs service
-  service:
-    name: autofs
-    state: restarted
+- name: Reload fstab
+  command: mount -a
   become: yes
+  ignore_errors: yes

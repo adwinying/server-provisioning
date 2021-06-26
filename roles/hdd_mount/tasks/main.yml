@@ -1,32 +1,47 @@
 ---
 # Configure HDD mount
 
-- name: Ensure autofs package installed
+- name: Ensure mergerfs installed
   apt:
-    name: autofs
+    name: mergerfs
     state: present
     update_cache: yes
   become: yes
 
-- name: Create mount directory
+- name: Configure disk1 fstab entry
+  mount:
+    src: UUID=cc04b2b2-b333-459a-9e2a-7c5b28a88604
+    fstype: ext4
+    path: /mnt/disk1
+    state: present
+  become: yes
+  notify:
+    - Reload fstab
+
+- name: Configure disk2 fstab entry
+  mount:
+    src: UUID=25c7a69c-aef6-44b5-8533-b79e27063a92
+    fstype: ext4
+    path: /mnt/disk2
+    state: present
+  become: yes
+  notify:
+    - Reload fstab
+
+- name: Create merged storage mount directory
   file:
-    path: /media/nas
+    path: /mnt/storage
     state: directory
-    mode: '0770'
+    mode: '0775'
   become: yes
 
-- name: Configure auto.master
-  template:
-    src: auto.master.j2
-    dest: /etc/auto.master
+- name: Configure merged storage fstab entry
+  mount:
+    src: /mnt/disk*
+    fstype: fuse.mergerfs
+    path: /mnt/storage
+    opts: defaults,nonempty,allow_other,use_ino,cache.files=off,moveonenospc=true,category.create=lfs,dropcacheonclose=true,minfreespace=5G,fsname=mergerfs
+    state: present
   become: yes
   notify:
-    - Restart autofs service
-
-- name: Configure auto.ext
-  template:
-    src: auto.ext.j2
-    dest: /etc/auto.ext
-  become: yes
-  notify:
-    - Restart autofs service
+    - Reload fstab
