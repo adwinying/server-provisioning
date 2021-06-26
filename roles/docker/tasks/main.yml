@@ -87,11 +87,6 @@
     version: master
     accept_hostkey: yes
 
-- name: Start docker containers
-  docker_compose:
-    project_src: ~/nas-docker
-    state: present
-
 - name: Schedule docker images to update every day
   cron:
     name: Update docker images
