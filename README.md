@@ -1,4 +1,4 @@
-# server-provitioning
+# server-provisioning
 
 Server setup scripts powered by ansible
 
@@ -43,7 +43,7 @@ $ ssh-add ~/.ssh/id_rsa
 6. Run pre-deployment script
 
 ```bash
-$ ansible-playbook -i servers bootstrap.yml
+$ ansible-playbook -i roots bootstrap.yml
 ```
 
 7. Configure `servers` inventory file
