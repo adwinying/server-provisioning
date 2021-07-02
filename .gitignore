@@ -2,3 +2,7 @@ roots
 servers
 group_vars/servers.yml
 roles/user/templates/authorized_keys.j2
+
+.terraform
+terraform.tfstate
+terraform.tfstate.backup
