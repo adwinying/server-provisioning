@@ -1,8 +1,37 @@
 # server-provisioning
 
-Server setup scripts powered by ansible
+Server infrastructure automation powered by terraform and ansible
 
 ## Installation
+
+### Terraform (Infrastructure)
+
+0. Export Vultr's API key as environmental variable
+```bash
+$ export TF_VAR_api_key="[API key]"
+```
+
+1. Init terraform
+```bash
+$ terraform init
+```
+
+2. [If importing an existing infrastructure] Import terraform state
+```bash
+$ terraform import vultr_instance.tunnel [instanceID]
+```
+
+3. Confirm infrastructure changes
+```bash
+$ terraform plan
+```
+
+4. Apply infrastructure changes
+```bash
+$ terraform apply
+```
+
+### Ansible (Software)
 
 1. Copy `group_vars/servers.yml.example` to `group_vars/servers.yml` set the appropriate config
 
@@ -67,6 +96,12 @@ $ ansible-playbook -i servers site.yml
 ```
 
 ## References
+
+### Terraform
+- [Vultr provider](https://registry.terraform.io/providers/vultr/vultr/latest/docs)
+- [Vultr variables](https://www.terraform.io/docs/language/values/variables.html)
+- [Vultr instance resource](https://registry.terraform.io/providers/vultr/vultr/latest/docs/resources/instance)
+- [Importing existing resources](https://learn.hashicorp.com/tutorials/terraform/state-import)
 
 ### Wireguard
 - [WireGuard Site-to-Site](https://gist.github.com/insdavm/b1034635ab23b8839bf957aa406b5e39)
