@@ -35,9 +35,7 @@ $ terraform apply
 
 1. Copy `group_vars/servers.yml.example` to `group_vars/servers.yml` set the appropriate config
 
-2. Copy `roles/user/templates/authorized_keys.j2.example` to `roles/user/templates/authorized_keys.j2` add the SSH public keys to be authorized
-
-3. Configure `roots` inventory file
+2. Configure `roots` inventory file
 
 ```
 [remote]
@@ -51,7 +49,7 @@ remote
 local
 ```
 
-4. Add `ForwardAgent yes` to SSH config
+3. Add `ForwardAgent yes` to SSH config
 
 ```
 Host nas
@@ -63,19 +61,19 @@ Host tunnel
   ForwardAgent yes
 ```
 
-5. Add identity key
+4. Add identity key
 
 ```bash
 $ ssh-add ~/.ssh/id_rsa
 ```
 
-6. Run pre-deployment script
+5. Run pre-deployment script
 
 ```bash
 $ ansible-playbook -i roots bootstrap.yml
 ```
 
-7. Configure `servers` inventory file
+6. Configure `servers` inventory file
 
 ```
 [remote]
@@ -89,7 +87,7 @@ remote
 local
 ```
 
-8. Run deployment script
+7. Run deployment script
 
 ```bash
 $ ansible-playbook -i servers site.yml
