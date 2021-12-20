@@ -1,6 +1,6 @@
+password_file
 roots
 servers
-group_vars/servers.yml
 
 .terraform
 terraform.tfstate
