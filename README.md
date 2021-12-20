@@ -33,6 +33,12 @@ $ terraform apply
 
 ### Ansible (Software)
 
+0. Add `password_file` and skip to step 4, else continue to next step
+
+```bash
+$ touch password_file
+```
+
 1. Copy `group_vars/servers.yml.example` to `group_vars/servers.yml` set the appropriate config
 
 2. Configure `roots` inventory file
@@ -90,7 +96,12 @@ local
 7. Run deployment script
 
 ```bash
-$ ansible-playbook -i servers site.yml
+$ ansible-playbook --vault-password-file=password_file -i servers site.yml
+
+## Editing encrypted files
+
+```bash
+$ ansible-vault edit --vault-password-file=password_file group_vars/servers.yml
 ```
 
 ## References
