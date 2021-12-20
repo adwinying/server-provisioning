@@ -33,7 +33,7 @@ $ terraform apply
 
 ### Ansible (Software)
 
-0. Add `password_file` and skip to step 4, else continue to next step
+0. Add `password_file` and skip to step 3, else continue to next step
 
 ```bash
 $ touch password_file
@@ -97,6 +97,7 @@ local
 
 ```bash
 $ ansible-playbook --vault-password-file=password_file -i servers site.yml
+```
 
 ## Editing encrypted files
 
