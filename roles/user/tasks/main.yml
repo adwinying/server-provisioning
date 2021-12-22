@@ -24,9 +24,9 @@
   become: yes
 
 - name: Add SSH keys to user "{{ server_username }}"
-  template:
-    src: authorized_keys.j2
-    dest: "/home/{{ server_username }}/.ssh/authorized_keys"
-    mode: '0600'
+  ansible.builtin.get_url:
+    url: "https://github.com/adwinying.keys"
+    dest: "~/.ssh/authorized_keys"
+    mode: "0600"
     owner: "{{ server_username }}"
   become: yes
