@@ -6,6 +6,8 @@
   roles:
     - role: locale
       tags: [bootstrap,locale]
+    - role: ssh
+      tags: [bootstrap,ssh]
     - role: git
       tags: [bootstrap,git]
     - role: misc

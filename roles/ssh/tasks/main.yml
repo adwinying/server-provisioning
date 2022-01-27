@@ -1,5 +1,5 @@
 ---
-# Hardening SSH
+# SSH settings
 
 - name: Disable root SSH access
   lineinfile:
@@ -11,12 +11,30 @@
   notify:
     - Restart sshd
 
-- name: Disable password login
-  lineinfile:
-    dest: /etc/ssh/sshd_config
-    regexp: "^PermitRootLogin"
-    line: "PermitRootLogin no"
-    state: present
-  become: yes
-  notify:
-    - Restart sshd
+- name: Create .ssh directory if it does not exist
+  file:
+    path: "~/.ssh"
+    state: directory
+    mode: "0700"
+    owner: "{{ server_username }}"
+
+- name: Set SSH private key
+  template:
+    src: "{{ inventory_hostname }}/id_rsa"
+    dest: "~/.ssh/id_rsa"
+    mode: "0600"
+    owner: "{{ server_username }}"
+
+- name: Set SSH public key
+  template:
+    src: "{{ inventory_hostname }}/id_rsa.pub"
+    dest: "~/.ssh/id_rsa.pub"
+    mode: "0644"
+    owner: "{{ server_username }}"
+
+- name: Add SSH keys to user "{{ server_username }}"
+  ansible.builtin.get_url:
+    url: "https://github.com/adwinying.keys"
+    dest: "~/.ssh/authorized_keys"
+    mode: "0600"
+    owner: "{{ server_username }}"
