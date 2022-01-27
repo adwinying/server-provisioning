@@ -41,59 +41,21 @@ $ touch password_file
 
 1. Copy `group_vars/servers.yml.example` to `group_vars/servers.yml` set the appropriate config
 
-2. Configure `roots` inventory file
+2. Configure `servers` inventory file
 
 ```
 [remote]
-tunnel ansible_user=root ansible_ssh_pass=extrasecret
+tunnel ansible_host=tunnel.example.org ansible_user=user ansible_become_pass=secret
 
 [local]
-nas ansible_user=root ansible_ssh_pass=extrasecret
+nas ansible_host=nas.example.org ansible_user=user ansible_become_pass=secret
 
 [servers:children]
 remote
 local
 ```
 
-3. Add `ForwardAgent yes` to SSH config
-
-```
-Host nas
-  HostName nas.example.org
-  ForwardAgent yes
-
-Host tunnel
-  HostName tunnel.example.org
-  ForwardAgent yes
-```
-
-4. Add identity key
-
-```bash
-$ ssh-add ~/.ssh/id_rsa
-```
-
-5. Run pre-deployment script
-
-```bash
-$ ansible-playbook -i roots bootstrap.yml
-```
-
-6. Configure `servers` inventory file
-
-```
-[remote]
-tunnel ansible_user=user ansible_become_pass=secret
-
-[local]
-nas ansible_user=user ansible_become_pass=secret
-
-[servers:children]
-remote
-local
-```
-
-7. Run deployment script
+3. Run deployment script
 
 ```bash
 $ ansible-playbook --vault-password-file=password_file -i servers site.yml
