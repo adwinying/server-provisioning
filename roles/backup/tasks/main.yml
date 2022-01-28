@@ -1,0 +1,81 @@
+---
+# Configure backups
+
+- name: Check rclone exists
+  stat:
+    path: /usr/bin/rclone
+  register: is_rclone_exist
+
+- name: Install rclone
+  shell:
+    cmd: curl https://rclone.org/install.sh | bash
+  become: yes
+  when: not is_rclone_exist.stat.exists
+
+- name: Create rclone config directory if it does not exist
+  file:
+    path: "/home/{{ server_username }}/.config/rclone"
+    state: directory
+    mode: '0744'
+    owner: "{{ server_username }}"
+
+- name: Configure rclone
+  template:
+    src: rclone.conf
+    dest: "~/.config/rclone/rclone.conf"
+    mode: "0600"
+    owner: "{{ server_username }}"
+
+- name: Add kopia GPG apt Key
+  apt_key:
+    url: https://kopia.io/signing-key
+    state: present
+  become: yes
+
+- name: Add kopia repository
+  apt_repository:
+    repo: deb http://packages.kopia.io/apt/ stable main
+    state: present
+  become: yes
+
+- name: Install kopia
+  apt:
+    name: kopia
+    state: present
+    update_cache: yes
+  become: yes
+
+- name: Create kopia config directory if it does not exist
+  file:
+    path: "/home/{{ server_username }}/.config/kopia"
+    state: directory
+    mode: '0744'
+    owner: "{{ server_username }}"
+
+- name: Configure kopia repository
+  template:
+    src: repository.config
+    dest: "~/.config/kopia/repository.config"
+    mode: "0600"
+    owner: "{{ server_username }}"
+
+- name: Configure kopia repository password
+  template:
+    src: repository.config.kopia-password
+    dest: "~/.config/kopia/repository.config.kopia-password"
+    mode: "0600"
+    owner: "{{ server_username }}"
+
+- name: Schedule kopia backup for appconfig
+  cron:
+    name: kopia backup for appconfig
+    minute: '0'
+    hour: '6'
+    job: (/usr/bin/kopia snapshot create /home/{{ server_username }}/nas-docker/appdata) >> /home/{{ server_username }}/backup_appconfig.log 2>&1 && curl -fsS --retry 3 {{ appconfig_backup_healthcheck_endpoint }}
+
+- name: Schedule kopia backup for tako-pancake
+  cron:
+    name: kopia backup for tako-pancake
+    minute: '0'
+    hour: '7'
+    job: (/usr/bin/kopia snapshot create /home/{{ server_username }}/tako-pancake) >> /home/{{ server_username }}/backup_takopancake.log 2>&1 && curl -fsS --retry 3 {{ takopancake_backup_healthcheck_endpoint }}

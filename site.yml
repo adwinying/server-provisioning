@@ -44,3 +44,5 @@
       tags: docker
     - role: healthcheck
       tags: healthcheck
+    - role: backup
+      tags: backup
