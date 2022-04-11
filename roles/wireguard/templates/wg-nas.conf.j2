@@ -2,6 +2,7 @@
 PrivateKey = {{ nas_private_key }}
 ListenPort = {{ wireguard_listen_port }}
 Address = {{ nas_ip_addr }}
+MTU = 1280
 
 # Enable access to LAN network behind NAT
 PostUp = iptables -A FORWARD -i %i -j ACCEPT

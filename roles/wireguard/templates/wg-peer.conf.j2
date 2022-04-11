@@ -2,6 +2,7 @@
 PrivateKey = {{ item.private_key }}
 Address = {{ item.ip_addr }}
 DNS = {{ wireguard_dns }}
+MTU = 1280
 
 [Peer]
 PublicKey = {{ tunnel_public_key }}
