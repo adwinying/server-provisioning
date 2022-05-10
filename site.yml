@@ -46,3 +46,5 @@
       tags: healthcheck
     - role: backup
       tags: backup
+    - role: ssh_tunnel
+      tags: ssh_tunnel

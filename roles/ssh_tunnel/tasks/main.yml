@@ -1,0 +1,28 @@
+---
+# Configure Reverse SSH Tunnel
+#
+
+- name: Ensure autossh package is installed
+  apt:
+    name: autossh
+    state: present
+    update_cache: yes
+  become: yes
+
+- name: Configure SSH tunnel systemd unit
+  template:
+    src: ssh_tunnel.service
+    dest: /usr/lib/systemd/system
+    mode: "0644"
+    owner: root
+  become: yes
+
+- name: Start SSH tunnel on boot
+  systemd:
+    name: ssh_tunnel.service
+    enabled: yes
+    masked: no
+    daemon_reload: yes
+  become: yes
+  notify:
+    - Restart SSH tunnel

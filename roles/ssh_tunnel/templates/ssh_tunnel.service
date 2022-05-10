@@ -1,0 +1,21 @@
+[Unit]
+Description=SSH tunnel powered by autossh
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User={{ server_username }}
+ExecStart=/usr/bin/autossh -N \
+-o 'StrictHostKeyChecking no' \
+-o 'ServerAliveInterval 60' \
+-o 'ServerAliveCountMax 3' \
+-p {{ ssh_tunnel_server_port }} \
+-R {{ ssh_tunnel_client_port }}:{{ ssh_tunnel_server_host }}:{{ ssh_tunnel_server_port }} \
+-i {{ ssh_tunnel_server_private_key }} \
+{{ ssh_tunnel_client_user }}@{{ ssh_tunnel_client_host }}
+Restart=always
+RestartSec=60
+
+[Install]
+WantedBy=multi-user.target
