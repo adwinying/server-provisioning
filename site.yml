@@ -19,6 +19,14 @@
     - role: wireguard
       tags: wireguard
 
+- name: Set up tailscale
+  hosts: servers
+  vars_files:
+    - vars/tailscale.yml
+  roles:
+    - role: artis3n.tailscale
+      tags: tailscale
+
 - name: Configure remote tunnel server
   hosts: remote
   roles:

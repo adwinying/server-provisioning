@@ -41,7 +41,13 @@ $ touch password_file
 
 1. Copy `group_vars/servers.yml.example` to `group_vars/servers.yml` set the appropriate config
 
-2. Configure `servers` inventory file
+2. Install roles from ansible galaxy
+
+```bash
+$ ansible-galaxy install -r requirements.yml
+```
+
+3. Configure `servers` inventory file
 
 ```
 [remote]
@@ -55,7 +61,7 @@ remote
 local
 ```
 
-3. Run deployment script
+4. Run deployment script
 
 ```bash
 $ ansible-playbook --vault-password-file=password_file -i servers site.yml

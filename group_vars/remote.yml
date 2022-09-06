@@ -1,1 +1,3 @@
 wireguard_config_template: "wg-server"
+
+tailscale_args: --hostname=tunnel
