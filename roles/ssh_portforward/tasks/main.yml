@@ -1,0 +1,30 @@
+---
+# Configure Reverse SSH Port Forwarding
+#
+
+- name: Ensure autossh package is installed
+  apt:
+    name: autossh
+    state: present
+    update_cache: yes
+  become: yes
+
+- name: Configure SSH tunnel systemd unit
+  template:
+    src: ssh_portforward.service
+    dest: /usr/lib/systemd/system
+    mode: "0644"
+    owner: root
+  become: yes
+  notify:
+    - Restart SSH tunnel
+
+- name: Start SSH tunnel on boot
+  systemd:
+    name: ssh_portforward.service
+    enabled: yes
+    masked: no
+    daemon_reload: yes
+  become: yes
+  notify:
+    - Restart SSH tunnel

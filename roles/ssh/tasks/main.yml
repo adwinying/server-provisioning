@@ -11,6 +11,16 @@
   notify:
     - Restart sshd
 
+- name: Enable SSH port forwarding outside localhost
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "^#?GatewayPorts"
+    line: "GatewayPorts clientspecified"
+    state: present
+  become: yes
+  notify:
+    - Restart sshd
+
 - name: Create .ssh directory if it does not exist
   file:
     path: "~/.ssh"

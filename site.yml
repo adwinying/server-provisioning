@@ -56,3 +56,5 @@
       tags: backup
     - role: ssh_tunnel
       tags: ssh_tunnel
+    - role: ssh_portforward
+      tags: ssh_portforward

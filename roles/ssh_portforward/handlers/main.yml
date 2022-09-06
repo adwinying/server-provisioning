@@ -1,0 +1,6 @@
+- name: Restart SSH tunnel
+  systemd:
+    name: ssh_portforward.service
+    state: restarted
+    daemon_reload: yes
+  become: yes
