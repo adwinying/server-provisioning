@@ -13,12 +13,6 @@
     - role: misc
       tags: [bootstrap,misc]
 
-- name: Set up wireguard
-  hosts: servers
-  roles:
-    - role: wireguard
-      tags: wireguard
-
 - name: Set up tailscale
   hosts: servers
   vars_files:

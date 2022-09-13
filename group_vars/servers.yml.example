@@ -20,36 +20,26 @@ dns_provider_password: secret
 
 docker_healthcheck_endpoint: # generate URL from healthchecks.io
 server_healthcheck_endpoint: # generate URL from healthchecks.io
+appconfig_backup_healthcheck_endpoint: # generate URL from healthchecks.io
+takopancake_backup_healthcheck_endpoint: # generate URL from healthchecks.io
 
-wireguard_listen_port: 1194
-wireguard_interface: wg0
-wireguard_endpoint: tunnel.example.org
-wireguard_address_range: 10.0.50.0/24
-wireguard_dns: 10.0.1.1,1.1.1.1,1.0.0.1
-wireguard_keepalive_duration: 25
+lan_address_range: 10.0.1.0/24
 
-lan_address_range: 10.0.1.1/24
+ssh_tunnel_server_host: server_hostname
+ssh_tunnel_server_port: 22
+ssh_tunnel_server_user: server_user
+ssh_tunnel_server_private_key: /path/to/id_rsa
+ssh_tunnel_client_host: client_hostname
+ssh_tunnel_client_port: 22
+ssh_tunnel_client_user: client_user
 
-tunnel_ip_addr: 10.0.50.1/24
-tunnel_private_key: # generate with wg genkey
-tunnel_public_key: # generate with wg pubkey
-
-nas_ip_addr: 10.0.50.2/32
-nas_private_key: # generate with wg genkey
-nas_public_key: # generate with wg pubkey
-
-peers:
-  - name: device1
-    ip_addr: 10.0.50.3/32
-    private_key: # generate with wg genkey
-    public_key: # generate with wg pubkey
-
-  - name: device2
-    ip_addr: 10.0.50.4/32
-    private_key: # generate with wg genkey
-    public_key: # generate with wg pubkey
-
-  - name: device3
-    ip_addr: 10.0.50.5/32
-    private_key: # generate with wg genkey
-    public_key: # generate with wg pubkey
+ssh_portforward_server_user: server_user
+ssh_portforward_server_private_key: /path/to/id_rsa
+ssh_portforward_client_host: client_hostname
+ssh_portforward_client_port: 22
+ssh_portforward_client_user: client_user
+ssh_portforwards:
+  - dest: localhost:80
+    src: 0.0.0.0:80
+  - dest: localhost:443
+    src: 0.0.0.0:443
