@@ -17,19 +17,19 @@
   shell: curl https://get.acme.sh | sh
   when: not is_acme_sh_installed.stat.exists
 
-- name: Configure HE DNS username
+- name: Configure Cloudflare Token
   lineinfile:
     path: ~/.acme.sh/account.conf
-    regex: '^SAVED_HE_Username'
-    line: SAVED_HE_Username='{{ dns_provider_username }}'
+    regex: '^SAVED_CF_Token'
+    line: SAVED_CF_Token='{{ dns_provider_token }}'
   notify:
     - Issue SSL cert
 
-- name: Configure HE DNS password
+- name: Configure Cloudflare acccount ID
   lineinfile:
     path: ~/.acme.sh/account.conf
-    regex: '^SAVED_HE_Password'
-    line: SAVED_HE_Password='{{ dns_provider_password }}'
+    regex: '^SAVED_CF_Account_ID'
+    line: SAVED_CF_Account_ID='{{ dns_provider_account_id }}'
   notify:
     - Issue SSL cert
 
