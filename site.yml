@@ -28,8 +28,6 @@
       tags: firewall
     - role: fail2ban
       tags: fail2ban
-    - role: ssh_portforward
-      tags: ssh_portforward
 
 - name: Configure local nas server
   hosts: local
@@ -52,3 +50,5 @@
       tags: backup
     - role: ssh_tunnel
       tags: ssh_tunnel
+    - role: ssh_portforward
+      tags: ssh_portforward

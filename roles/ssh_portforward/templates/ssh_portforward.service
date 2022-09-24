@@ -12,7 +12,7 @@ ExecStart=/usr/bin/autossh -N \
 -o 'ServerAliveCountMax 3' \
 -p {{ ssh_portforward_client_port }} \
 {% for pf in ssh_portforwards %}
--L {{ pf.src }}:{{ pf.dest }} \
+-R {{ pf.src }}:{{ pf.dest }} \
 {% endfor %}
 -i {{ ssh_portforward_server_private_key }} \
 {{ ssh_portforward_client_user }}@{{ ssh_portforward_client_host }}
