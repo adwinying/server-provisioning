@@ -21,7 +21,6 @@ dns_provider_password: secret
 docker_healthcheck_endpoint: # generate URL from healthchecks.io
 server_healthcheck_endpoint: # generate URL from healthchecks.io
 appconfig_backup_healthcheck_endpoint: # generate URL from healthchecks.io
-takopancake_backup_healthcheck_endpoint: # generate URL from healthchecks.io
 
 lan_address_range: 10.0.1.0/24
 

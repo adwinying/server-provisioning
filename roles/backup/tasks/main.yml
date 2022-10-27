@@ -72,10 +72,3 @@
     minute: '0'
     hour: '6'
     job: (/usr/bin/kopia snapshot create /home/{{ server_username }}/nas-docker/appdata) >> /home/{{ server_username }}/backup_appconfig.log 2>&1 && curl -fsS --retry 3 {{ appconfig_backup_healthcheck_endpoint }}
-
-- name: Schedule kopia backup for tako-pancake
-  cron:
-    name: kopia backup for tako-pancake
-    minute: '0'
-    hour: '7'
-    job: (/usr/bin/kopia snapshot create /home/{{ server_username }}/tako-pancake) >> /home/{{ server_username }}/backup_takopancake.log 2>&1 && curl -fsS --retry 3 {{ takopancake_backup_healthcheck_endpoint }}
