@@ -5,3 +5,4 @@ servers
 .terraform
 terraform.tfstate
 terraform.tfstate.backup
+.direnv
